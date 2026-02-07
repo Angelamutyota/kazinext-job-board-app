@@ -38,6 +38,14 @@ export interface Job {
   ref: string;
 }
 
+export interface JobFilters {
+  query?: string;
+  category?: string;
+  location?: string;
+  experience?: string;
+}
+
+
 export interface JobResponse {
   content: Job[];
   totalFound: number;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchJobs } from "@/services/jobsApi";
 import { Job } from "@/types/job";
+import { useRouter } from "next/router";
 
 import JobsTable from "@/components/JobsTable";
 import JobDetailsPanel from "@/components/JobDetailsPanel";
@@ -11,27 +12,42 @@ export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [search, setSearch] = useState("");
+  const router = useRouter();
+  const { category, location, experience } = router.query;
+
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const normalize = (param?: string | string[]) =>
+  Array.isArray(param) ? param[0] : param;
+
   // 🔥 Fetch jobs
   useEffect(() => {
+  if (!router.isReady) return;
 
-    const loadJobs = async () => {
-      try {
-        const data = await fetchJobs();
-        setJobs(data.content);
-      } catch (err) {
-        setError("Failed to load jobs.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadJobs = async () => {
+    try {
+      setLoading(true);
 
-    loadJobs();
+      const data = await fetchJobs({
+         category: normalize(category),
+        location: normalize(location),
+        experience: normalize(experience),
+      });
 
-  }, []);
+      setJobs(data.content);
+    } catch {
+      setError("Failed to load jobs.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadJobs();
+
+}, [router.isReady, category, location, experience]);
+
 
   // 🔥 Client filtering
   const filteredJobs = jobs.filter((job) =>

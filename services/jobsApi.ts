@@ -1,15 +1,37 @@
 import { apiClient } from "./apiClient";
 import { JobResponse } from "@/types/job";
 
-export async function fetchJobs(
-  query?: string
-): Promise<JobResponse> {
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/postings`;
 
-  const endpoint = query
-    ? `/postings?q=${query}`
-    : `/postings`;
 
-  return apiClient<JobResponse>(endpoint);
+interface JobFilters {
+  category?: string;
+  location?: string;
+  experience?: string;
+  query?: string;
+}
+export async function fetchJobs(filters: JobFilters = {}) {
+  const params = new URLSearchParams();
+
+  if (filters.query) params.append("q", filters.query);
+  if (filters.location) params.append("city", filters.location);
+
+  // SmartRecruiters uses function / experienceLevel
+  if (filters.category) params.append("function", filters.category);
+  if (filters.experience) params.append("experienceLevel", filters.experience);
+
+  const url =
+    params.toString().length > 0
+      ? `${BASE_URL}?${params.toString()}`
+      : BASE_URL;
+
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch jobs");
+  }
+
+  return res.json();
 }
 
 
