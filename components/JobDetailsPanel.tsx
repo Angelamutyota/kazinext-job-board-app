@@ -1,4 +1,8 @@
+import { useEffect, useState } from "react";
+import { fetchJobDetails } from "@/services/jobsApi";
 import { Job } from "@/types/job";
+import { useRouter } from "next/router";
+
 
 interface Props {
   job: Job;
@@ -6,68 +10,83 @@ interface Props {
 }
 
 export default function JobDetailsPanel({ job, onClose }: Props) {
+
+  const [details, setDetails] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
+  const postingId = job.ref.split("/").pop();
+
+  useEffect(() => {
+
+    const loadDetails = async () => {
+      try {
+        const data = await fetchJobDetails(postingId!);
+        setDetails(data);
+      } catch {
+        console.error("Failed to fetch details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDetails();
+
+  }, [postingId]);
+
+  if (loading) return <div className="p-6">Loading details...</div>;
+
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 sticky top-6">
-      {/* Header with close button */}
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-sm text-green-600 font-medium">Active</span>
-        <button
-          onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 text-xl"
-        >
-          ✕
-        </button>
+    <div className="bg-white border rounded-lg shadow-lg p-6 sticky top-6 h-[85vh] overflow-y-auto">
+
+      <div className="flex justify-between mb-4">
+        <span className="text-green-600 text-sm font-medium">Active</span>
+        <button onClick={onClose}>✕</button>
       </div>
 
-      <h2 className="text-2xl font-bold mb-6">
-        Overview
-      </h2>
+      <h2 className="text-2xl font-bold mb-6">Overview</h2>
 
-      <div className="space-y-3 mb-8">
-        <div>
-          <p className="text-sm text-gray-600">Company Name:</p>
-          <p className="font-medium">{job.company}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-600">Job Title:</p>
-          <p className="font-medium">{job.title}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-600">Location:</p>
-          <p className="font-medium">{job.location}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-600">Date Posted:</p>
-          <p className="font-medium">{job.experience}</p>
-        </div>
+      <div className="space-y-3 mb-8 border p-4 rounded-lg">
+
+        <p><b>Company:</b> {details.company.name}</p>
+        <p><b>Location:</b> {details.location.fullLocation}</p>
+        <p><b>Employment:</b> {details.typeOfEmployment?.label}</p>
+        <p><b>Experience:</b> {details.experienceLevel?.label}</p>
+
       </div>
 
       <h3 className="text-xl font-bold mb-4">
-        Job Details
+        Job Description
       </h3>
 
-      <div className="mb-6">
-        <p className="text-sm font-semibold mb-2">About the job</p>
-        <p className="text-sm text-gray-700 leading-relaxed mb-4">
-          {job.description}
-        </p>
-
-        {/* You can add more sections here based on your design */}
-        <p className="text-sm font-semibold mb-2">Key Responsibilities</p>
-        <ul className="text-sm text-gray-700 space-y-1 list-disc ml-5">
-          <li>Assist with monitoring and maintaining ETL.</li>
-          <li>Help troubleshoot SQL Server issues.</li>
-        </ul>
-      </div>
+      {/* 🔥 Render HTML safely */}
+      <div
+        className="prose max-w-none"
+        dangerouslySetInnerHTML={{
+          __html: details.jobAd?.sections?.jobDescription?.text
+        }}
+      />
 
       <div className="flex gap-3 mt-8">
-        <button className="flex-1 bg-blue-900 text-white py-2.5 rounded-md hover:bg-blue-800 font-medium">
+
+        <a
+          href={details.applyUrl}
+          target="_blank"
+          className="flex-1 bg-blue-900 text-white py-2.5 rounded-md text-center"
+        >
           Apply
-        </button>
-        <button className="flex-1 border border-gray-300 text-gray-700 py-2.5 rounded-md hover:bg-gray-50 font-medium">
+        </a>
+
+        <button
+          onClick={() => router.push(`/jobs/${postingId}`)
+}
+          className="flex-1 border py-2.5 rounded-md"
+        >
           View More
         </button>
+
       </div>
+
     </div>
   );
 }

@@ -12,10 +12,10 @@ export default function JobsTable({ jobs, onSelect }: Props) {
       <thead className="bg-gray-100 text-left">
         <tr>
           <th className="p-4">Company</th>
-          <th>Job Title</th>
-          <th>Location</th>
-          <th>Date Posted</th>
-          <th>Action</th>
+          <th className="p-4">Job Title</th>
+          <th className="p-4">Location</th>
+          <th className="p-4">Date Posted</th>
+          <th className="p-4">Action</th>
         </tr>
       </thead>
 

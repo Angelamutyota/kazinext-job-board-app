@@ -1,15 +1,15 @@
-export interface Job {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  experience: "Junior" | "Mid" | "Senior";
-  description: string;
-  salary: string;
-  type: "Full-time" | "Part-time" | "Contract";
-}
+// export interface Job {
+//   id: string;
+//   title: string;
+//   company: string;
+//   location: string;
+//   experience: "Junior" | "Mid" | "Senior";
+//   description: string;
+//   salary: string;
+//   type: "Full-time" | "Part-time" | "Contract";
+// }
 
-export interface SmartRecruitersJob {
+export interface Job {
   id: string;
   name: string;
   releasedDate: string;
@@ -38,7 +38,7 @@ export interface SmartRecruitersJob {
   ref: string;
 }
 
-export interface SmartRecruitersResponse {
-  content: SmartRecruitersJob[];
+export interface JobResponse {
+  content: Job[];
   totalFound: number;
 }

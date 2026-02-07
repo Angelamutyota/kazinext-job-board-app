@@ -1,21 +1,22 @@
-import { SmartRecruitersResponse } from "@/types/job";
-
-const BASE_URL =
-  "https://api.smartrecruiters.com/v1/companies/smartrecruiters/postings";
+import { apiClient } from "./apiClient";
+import { JobResponse } from "@/types/job";
 
 export async function fetchJobs(
   query?: string
-): Promise<SmartRecruitersResponse> {
+): Promise<JobResponse> {
 
-  const url = query
-    ? `${BASE_URL}?q=${query}`
-    : BASE_URL;
+  const endpoint = query
+    ? `/postings?q=${query}`
+    : `/postings`;
 
-  const res = await fetch(url);
+  return apiClient<JobResponse>(endpoint);
+}
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch jobs");
-  }
 
-  return res.json();
+
+export async function fetchJobDetails(
+  postingId: string
+) {
+
+  return apiClient(`/postings/${postingId}`);
 }
