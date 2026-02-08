@@ -12,10 +12,10 @@ This project represents a significant milestone in my frontend engineering journ
 
 ## 🌍 Live Links
 
-- **Live Application:** _(Add deployment link — Vercel recommended)_  
-- **Figma Design:** _(Add link)_  
-- **Demo Video:** _(Add link)_  
-- **Presentation Deck:** _(Add link)_  
+- **Live Application:** (https://kazinext-job-board-app.vercel.app/) 
+- **Figma Design:** (https://www.figma.com/design/fEgD4bBlSEd1n8QI5Z2HJV/KaziNext--GRP?node-id=0-1&t=lntsIiFvtbOrWrWE-1) 
+- **Demo Video:** https://www.loom.com/share/22cb7c85ab8a4dc1adbd52b40a81da72 
+- **Presentation Deck:** (https://docs.google.com/presentation/d/1IaPswvIZuUwBgj0t42eX3mFoPT33S3-14L98cSA9n9w/edit?usp=sharing)  
 
 ---
 
