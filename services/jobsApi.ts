@@ -9,12 +9,16 @@ interface JobFilters {
   location?: string;
   experience?: string;
   query?: string;
+   limit?: number;
 }
 export async function fetchJobs(filters: JobFilters = {}) {
   const params = new URLSearchParams();
 
   if (filters.query) params.append("q", filters.query);
   if (filters.location) params.append("city", filters.location);
+if (filters.limit) {
+  params.append("limit", filters.limit.toString());
+}
 
   // SmartRecruiters uses function / experienceLevel
   if (filters.category) params.append("function", filters.category);

@@ -27,7 +27,7 @@ export default function JobDetailsPage() {
   return (
     <main className="max-w-4xl mx-auto py-16 text-gray-900">
 
-      <h1 className="text-4xl font-bold mb-4">
+      <h1 className="text-4xl font-bold mb-4 text-brand">
         {job.name}
       </h1>
 
@@ -43,7 +43,7 @@ export default function JobDetailsPage() {
         }}
       />
 
-<h2 className="text-2xl font-bold mb-4">{job.jobAd.sections.jobDescription.title}</h2>
+<h2 className="text-2xl font-bold mt-5 mb-4">{job.jobAd.sections.jobDescription.title}</h2>
       <div
         className="prose max-w-none"
         dangerouslySetInnerHTML={{
@@ -51,7 +51,7 @@ export default function JobDetailsPage() {
         }}
       />
 
-      <h2 className="text-2xl font-bold mb-4">{job.jobAd.sections.qualifications.title}</h2>
+      <h2 className="text-2xl font-bold mt-5 mb-4">{job.jobAd.sections.qualifications.title}</h2>
       <div
         className="prose max-w-none"
         dangerouslySetInnerHTML={{

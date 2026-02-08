@@ -37,17 +37,10 @@ export default function SearchBar() {
       </select>
 
       {/* Location */}
-      <input
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        placeholder="Location"
-        className="flex-1 px-4 py-3 rounded-lg border outline-none placeholder-gray-500"
-      />
-
       <select
       value={location}
         onChange={(e) => setLocation(e.target.value)}
-        className="flex-1 px-4 py-3 rounded-lg border outline-none placeholder-gray-500">
+        className="flex-1 px-4 py-3 rounded-lg border outline-none placeholder-gray-500 text-gray-700"> 
       <option value="">Location</option>
       <option value="Poland">Poland</option>
       <option value="United States">United States</option>
